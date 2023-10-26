@@ -2,7 +2,7 @@
 import { Group, Material, MathUtils, Mesh, MeshBasicMaterial, Texture } from 'three';
 import { createTile } from './Tile';
 import { pano } from '../../../config.json'
-import { AbortFunction } from '../../../Types';
+import {AbortFunction, Source} from '../../../Types';
 
 const sidePosition = (side: string, level: number) => {
     const tileBaseSize = pano.tileBase + pano.maxLevels - level
@@ -35,7 +35,7 @@ const sideByLatLng = (lat: number, lng: number) => {
     if(lat < -45) return 'd'
 }
 
-function createSide(side: string, level: number, tiles: Array<any>, source: string | Function) {
+function createSide(side: string, level: number, tiles: Array<any>, source: Source) {
     const group = new Group()
     const position = sidePosition(side, level)
     const rotation = sideRotation(side)
@@ -51,7 +51,7 @@ function createSide(side: string, level: number, tiles: Array<any>, source: stri
     return group
 }
 
-function updateSide(group: Group, side: string, level: number, tiles: Array<any>, source: string | Function, meshes: Array<string>) {
+function updateSide(group: Group, side: string, level: number, tiles: Array<any>, source: Source, meshes: Array<string>) {
     for(var i = 0; i < tiles.length; i++){
         const data = tiles[i]
         const name = level + '-' + side + '-' + data.x + '-' + data.y

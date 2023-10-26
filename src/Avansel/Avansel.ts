@@ -7,6 +7,7 @@ import Camera from './Components/Camera'
 import Sphere from './Components/Pano/Sphere'
 import Scene from './Components/Scene'
 import Pano from './Components/Pano/Pano'
+import {Source} from "./Types";
 
 //import { createPreview } from './components/pano/preview';
 //import { MultiResPano } from './components/pano/MultiResPano';
@@ -30,7 +31,7 @@ class Avansel {
   
   tween: boolean
 
-  constructor(container: Element, levels: Array<Object>, source: string|Function) {
+  constructor(container: Element) {
     this.container = container
     this.renderer = new Renderer(container)
     this.canvas = this.renderer.get().domElement
@@ -52,7 +53,7 @@ class Avansel {
     return this
   }
 
-  multires(levels: Array<Object>, source: Function|string){
+  multires(levels: Array<Object>, source: Source){
     this.pano = new Pano().multires(levels, source, this.controls)
     this.scene.add(this.pano.get())
     return this

@@ -2,6 +2,7 @@ import Sphere from './Sphere'
 import { Multires } from './Multires'
 import { Group, Mesh } from 'three'
 import Controls from '../../systems/Controls'
+import {Source} from "../../Types";
 
 export default class Pano{
 
@@ -14,7 +15,7 @@ export default class Pano{
         return this
     }
 
-    multires(levels: Array<Object>, source: Function|string, controls: Controls){
+    multires(levels: Array<Object>, source: Source, controls: Controls){
         this.instance = new Multires(levels, source, controls)
         this.instance.createPano()
         this.instance.updatePosition()

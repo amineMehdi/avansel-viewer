@@ -4,11 +4,12 @@ import { tilesFor } from '../utils'
 import { createCube } from './common/cube'
 import { pano } from '../../config.json'
 import Controls from '../../systems/Controls.js'
+import {Source} from "../../Types";
 
 class Multires {
 
   levels: Array<any>
-  source: Function | string
+  source: Source // TODO rename because there is Source in Three.js
   controls: Controls
   camera: PerspectiveCamera
   instance: Group
@@ -19,7 +20,7 @@ class Multires {
   pixelsMax: number
   cube: Mesh
 
-  constructor(levels: Array<any>, source: Function | string, controls: Controls) {
+  constructor(levels: Array<any>, source: Source, controls: Controls) {
     this.pixelsMin = 0.5
     this.pixelsMax = 5
     this.levels = levels
