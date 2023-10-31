@@ -11,9 +11,7 @@ import {
 	FileLoader, LoadingManager
 } from 'three';
 import { pano } from '../../../config.json'
-import {AbortFunction, Source} from '../../../Types';
-import * as url from "url";
-
+import {AbortFunction, MultiResSource} from '../../../Types';
 class TextureLoader extends Loader{
 
 	constructor( manager?: any ) {
@@ -23,13 +21,13 @@ class TextureLoader extends Loader{
 	load( url: string, requestHeader? : Record<string, any>, onLoad?: Function, onProgress?: (event: ProgressEvent<EventTarget>) => void | null, onError?: (event: ErrorEvent) => void | null ): Texture {
 		const texture = new Texture() as Texture & AbortFunction;
 
-		// let loader = new CustomImageLoader();
+		let loader = new ImageLoader( this.manager);
 		// loader = loader.setCrossOrigin( this.crossOrigin ).setPath( this.path ).setWithCredentials(true).setRequestHeader(requestHeader);
 		// loader.setPath( this.path );
 		// loader.setRequestHeader(requestHeader)
 
-		let loader = new CustomImageLoader();
-		var image = loader.load( url, requestHeader, function ( image ) {
+		// let loader = new CustomImageLoader();
+		var image = loader.load( url,function ( image ) {
 			texture.image = image;
 			texture.needsUpdate = true;
 			if ( onLoad !== undefined ) {
@@ -67,7 +65,7 @@ class CustomImageLoader {
 	}
 }
 
-function createTile(name: string, side: string, level: number, data: any, source: Source) {
+function createTile(name: string, side: string, level: number, data: any, source: MultiResSource) {
     const url = typeof source.url == 'function' ? source.url(side, level, data.x, data.y) : source.url
     const tileBaseSize = pano.tileBase + pano.maxLevels - level
     const half = tileBaseSize / 2

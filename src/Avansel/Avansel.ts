@@ -4,10 +4,9 @@ import Controls from './systems/Controls'
 import Resizer from './systems/Resizer'
 
 import Camera from './Components/Camera'
-import Sphere from './Components/Pano/Sphere'
 import Scene from './Components/Scene'
 import Pano from './Components/Pano/Pano'
-import {Source} from "./Types";
+import {LevelConfig, MultiResSource} from "./Types";
 
 //import { createPreview } from './components/pano/preview';
 //import { MultiResPano } from './components/pano/MultiResPano';
@@ -53,8 +52,8 @@ class Avansel {
     return this
   }
 
-  multires(levels: Array<Object>, source: Source){
-    this.pano = new Pano().multires(levels, source, this.controls)
+  multires(levelsConfig: LevelConfig, source: MultiResSource){
+    this.pano = new Pano().multires(levelsConfig, source, this.controls)
     this.scene.add(this.pano.get())
     return this
   }
@@ -80,35 +79,3 @@ class Avansel {
 }
 
 export { Avansel }
-
-
-    /*
-    if(false){ //has preview
-      createPreview({
-        url: '/tiles/preview.jpg',
-        striporder: 'lfrbud',
-        size: 256
-      }).then(res => {
-        this.preview = res
-        this.scene.add(this.preview)
-        this.pano = new MultiResPano(levels, source, this.controls, this.camera)
-        const panoMesh = this.pano.createPano()
-        this.scene.add(panoMesh)
-        const pos = this.controls.getPosition()
-        this.controls.lookAt(pos.lat, pos.lng)
-        this.updatePosition()
-      })  
-    }else if(levels.length > 0 && typeof source == 'function'){
-      this.pano = new MultiResPano(levels, source, this.controls, this.camera)
-      this.scene.add(this.pano.createPano())
-
-      const pos = this.controls.getPosition()
-      this.controls.lookAt(pos.lat, pos.lng)
-      this.updatePosition()
-    }else{
-      this.scene.add(createSphere('/files/examples/pano-8000.jpg'))
-
-      const pos = this.controls.getPosition()
-      this.controls.lookAt(pos.lat, pos.lng)
-    }
-    */

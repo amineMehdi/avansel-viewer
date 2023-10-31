@@ -1,15 +1,16 @@
 import { Group, Mesh, Vector2, Raycaster, PerspectiveCamera, Vector3 } from 'three'
 import { createSide, updateSide, deleteSide } from './common/Side.js'
-import { tilesFor } from '../utils'
+import {Level, tilesFor} from '../utils'
 import { createCube } from './common/cube'
 import { pano } from '../../config.json'
 import Controls from '../../systems/Controls.js'
-import {Source} from "../../Types";
+import {LevelConfig, MultiResSource} from "../../Types";
 
 class Multires {
 
-  levels: Array<any>
-  source: Source // TODO rename because there is Source in Three.js
+  levels: Array<Level>
+  levelsConfig: LevelConfig
+  source: MultiResSource
   controls: Controls
   camera: PerspectiveCamera
   instance: Group
@@ -20,10 +21,11 @@ class Multires {
   pixelsMax: number
   cube: Mesh
 
-  constructor(levels: Array<any>, source: Source, controls: Controls) {
+  constructor(levelsConfig: LevelConfig, source: MultiResSource, controls: Controls) {
     this.pixelsMin = 0.5
     this.pixelsMax = 5
-    this.levels = levels
+    this.levels = this.initLevels(levelsConfig)
+    this.levelsConfig = levelsConfig
     this.source = source
     this.controls = controls
     this.camera = controls.camera.get()
@@ -37,6 +39,20 @@ class Multires {
 
     this.controls.canvas.addEventListener( 'cameraMove', this.onCameraMove.bind(this) )
     this.controls.canvas.addEventListener( 'fovChanged', this.onFovChanged.bind(this) )
+  }
+
+  initLevels(levelsConfig: LevelConfig) : Array<Level> {
+    if (!levelsConfig) return
+    const levels = []
+    for(let i = 0; i < levelsConfig.maxLevel; i++) {
+      const level = {
+        size: Math.floor(levelsConfig.resolution / Math.pow(2, i)),
+        tileSize: levelsConfig.tileSize
+      }
+      levels.push(level)
+    }
+
+    return levels.reverse()
   }
 
   get(): Group{
@@ -187,7 +203,7 @@ class Multires {
     let maxLevel = 0
     for(var i = 0; i < levels; i++){
       const item  = this.pixelsBySize(this.levels[i].size, pos.fov)
-      if(this.levels[i].fallback) item.visible = true
+      if(this.levelsConfig.fallback) item.visible = true
       if(item.visible && !hasVisible) hasVisible = true
       if(item.visible && i > maxLevel) maxLevel = i
       this.visible.pixels[i] = item

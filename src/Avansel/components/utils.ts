@@ -18,7 +18,7 @@ interface Position {
     z: number
 }
 
-interface Level {
+export interface Level {
     size: number,
     tileSize: number
 }
