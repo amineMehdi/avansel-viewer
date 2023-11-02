@@ -8,7 +8,7 @@
       "noImplicitAny": false,
       "esModuleInterop": true,
       "resolveJsonModule": true,
-//      "declaration": true,
-//      "declarationDir": "build/types",
+      "declaration": true,
+      "declarationDir": "build/types",
     }
   }
