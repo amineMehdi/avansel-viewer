@@ -1,5 +1,5 @@
 import { Group, Mesh, Vector2, Raycaster, PerspectiveCamera, Vector3 } from 'three'
-import { createSide, updateSide, deleteSide } from './common/Side.js'
+import { Side } from './common/Side.js'
 import {Level, tilesFor} from '../utils'
 import { createCube } from './common/cube'
 import { pano } from '../../config.json'
@@ -15,12 +15,11 @@ class Multires {
   camera: PerspectiveCamera
   instance: Group
   pos: Object
-  fov: number
   visible: any
   pixelsMin: number
   pixelsMax: number
   cube: Mesh
-
+  side: Side
   constructor(levelsConfig: LevelConfig, source: MultiResSource, controls: Controls) {
     this.pixelsMin = 0.5
     this.pixelsMax = 5
@@ -36,6 +35,7 @@ class Multires {
       meshes: []
     }
     this.cube = createCube()
+    this.side = new Side()
 
     this.controls.canvas.addEventListener( 'cameraMove', this.onCameraMove.bind(this) )
     this.controls.canvas.addEventListener( 'fovChanged', this.onFovChanged.bind(this) )
@@ -228,15 +228,19 @@ class Multires {
   }
 
   addUpdateVisible(){
+
+    const currentFovLevel: number = this.getFovLevel() + 1
     for(var side in this.visible.sides){
       for(var level in this.visible.sides[side].tiles){
         const tiles = this.visible.sides[side].tiles[level]
         const name = level + '-' + side
         const group = this.instance.getObjectByName(name) as Group
-        if(group){
-          updateSide(group, side, parseInt(level), tiles, this.source, this.visible.meshes)
-        }else{
-          this.instance.add(createSide(side, parseInt(level), tiles, this.source))
+        if (level === currentFovLevel.toString() || this.levels[level].fallback) {
+          if(group){
+            this.side.updateSide(group, side, parseInt(level), tiles, this.source, this.visible.meshes)
+          }else{
+            this.instance.add(this.side.createSide(side, parseInt(level), tiles, this.source))
+          }
         }
       }
     }
@@ -250,7 +254,7 @@ class Multires {
       ){
         const group = this.instance.getObjectByName(name)
         if(group){
-          deleteSide(group)
+          this.side.deleteSide(group)
           this.instance.remove(group)
         }
       }
@@ -258,6 +262,13 @@ class Multires {
     return this.instance
   }
 
+  private getFovLevel(): number {
+    const nbLevels = this.levels.length
+    const fov = this.controls.position().fov
+    const step = (this.controls.fovMax - this.controls.fovMin) / (nbLevels - 1)
+
+    return nbLevels - 1 - Math.floor((fov - this.controls.fovMin) / step)
+  }
 }
 
 export { Multires }

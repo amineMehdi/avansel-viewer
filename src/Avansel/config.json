@@ -17,7 +17,7 @@
 
     "controls": {
         "fovMin": 0.0055,
-        "fovMax": 130,
+        "fovMax": 70,
         "moveFactor": 1.5
     }
 }

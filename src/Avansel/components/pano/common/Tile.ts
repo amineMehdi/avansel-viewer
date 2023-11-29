@@ -21,13 +21,13 @@ class TextureLoader extends Loader{
 	load( url: string, requestHeader? : Record<string, any>, onLoad?: Function, onProgress?: (event: ProgressEvent<EventTarget>) => void | null, onError?: (event: ErrorEvent) => void | null ): Texture {
 		const texture = new Texture() as Texture & AbortFunction;
 
-		let loader = new ImageLoader( this.manager);
+		let loader = new CustomImageLoader();
 		// loader = loader.setCrossOrigin( this.crossOrigin ).setPath( this.path ).setWithCredentials(true).setRequestHeader(requestHeader);
 		// loader.setPath( this.path );
 		// loader.setRequestHeader(requestHeader)
 
 		// let loader = new CustomImageLoader();
-		var image = loader.load( url,function ( image ) {
+		var image = loader.load( url, requestHeader, function ( image ) {
 			texture.image = image;
 			texture.needsUpdate = true;
 			if ( onLoad !== undefined ) {
