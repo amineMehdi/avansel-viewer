@@ -50,29 +50,9 @@ export default class Controls{
     onMouseUpHandler: any
 
     constructor(camera: Camera, canvas: HTMLCanvasElement) {
-
         this.camera = camera;
         this.canvas = canvas
-        this.tween = true
-        this.fovMax = controls.fovMax;
-        this.fovMin = controls.fovMin;
-
-        this.isInteracting = false
-        this.onMouseDownMouseX = 0
-        this.onMouseDownMouseY = 0
-
-        this.lng = 90
-        this.lngVector = 90
-        this.onMouseDownLng = 0
-
-        this.lat = 0
-        this.latVector = 0
-        this.onMouseDownLat = 0
-        this.phi = 0
-        this.theta = 0
-
-        this.fov = 70
-        this.fovVector = 70
+        this.initParams()
 
         this.init()
     }
@@ -145,6 +125,33 @@ export default class Controls{
         }
     }
 
+    private initParams() {
+
+
+        this.tween = true
+        this.fovMax = controls.fovMax;
+        this.fovMin = controls.fovMin;
+
+        this.isInteracting = false
+        this.onMouseDownMouseX = 0
+        this.onMouseDownMouseY = 0
+
+        this.lng = 90
+        this.lngVector = 90
+        this.onMouseDownLng = 0
+
+        this.lat = 0
+        this.latVector = 0
+        this.onMouseDownLat = 0
+        this.phi = 0
+        this.theta = 0
+
+        this.fov = 70
+        this.fovVector = 70
+    }
+    reset() {
+        this.initParams()
+    }
     // Touch events
 
     onTouchStart(e: TouchEvent){

@@ -34,7 +34,7 @@ export default class Pano{
         if (!(this.source && this.controls)) {
             throw new Error("Source and/or Controls are not defined")
         }
-
+        this.controls.reset()
         return this.multires(levelsConfig, this.source, this.controls)
     }
 }
