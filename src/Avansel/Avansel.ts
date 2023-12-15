@@ -7,13 +7,6 @@ import Camera from './Components/Camera'
 import Scene from './Components/Scene'
 import Pano from './Components/Pano/Pano'
 import {LevelConfig, MultiResSource} from "./Types";
-
-//import { createPreview } from './components/pano/preview';
-//import { MultiResPano } from './components/pano/MultiResPano';
-
-//import { createHotspot, createHotspotXYZ } from './components/hotspot/hotspot';
-//import { PanoControls } from './systems/PanoControls.js';
-
 class Avansel {
 
   loop: Loop
@@ -27,7 +20,7 @@ class Avansel {
   scene: Scene
 
   pano: Pano
-  
+
   tween: boolean
 
   constructor(container: Element) {
@@ -76,6 +69,15 @@ class Avansel {
     this.loop.stop();
   }
 
+  reset() {
+    this.scene.reset()
+  }
+
+  updateMultiResScene(levelsConfig: LevelConfig){
+    this.pano = this.pano.updateMultiResInstance(levelsConfig)
+    this.reset()
+    this.scene.add(this.pano.get())
+  }
 }
 
 export { Avansel }

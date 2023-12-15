@@ -15,4 +15,7 @@ export default class Scene{
     return this.instance
   }
 
+  reset() {
+    this.instance.clear()
+  }
 }

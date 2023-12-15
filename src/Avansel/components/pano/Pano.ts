@@ -7,6 +7,8 @@ import {LevelConfig, MultiResSource} from "../../Types";
 export default class Pano{
 
     instance: Sphere|Multires
+    source: MultiResSource
+    controls: Controls
 
     constructor(){}
 
@@ -16,6 +18,8 @@ export default class Pano{
     }
 
     multires(levelsConfig: LevelConfig, source: MultiResSource, controls: Controls){
+        this.source = source
+        this.controls = controls
         this.instance = new Multires(levelsConfig, source, controls)
         this.instance.createPano()
         this.instance.updatePosition()
@@ -26,4 +30,11 @@ export default class Pano{
         return this.instance.get()
     }
 
+    updateMultiResInstance(levelsConfig: LevelConfig) {
+        if (!(this.source && this.controls)) {
+            throw new Error("Source and/or Controls are not defined")
+        }
+
+        return this.multires(levelsConfig, this.source, this.controls)
+    }
 }

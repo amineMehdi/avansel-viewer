@@ -17,18 +17,6 @@ export default [
     ],
   },
   // {
-  //   input: 'src/main.js',
-  //   output: {
-  //     file: 'build/main.js',
-  //     format: 'cjs',
-  //     sourcemap: true
-  //   },
-  //   plugins: [
-  //     tsPlugin(),
-  //     nodeResolve({ preferBuiltins: true })
-  //   ]
-  // },
-  // {
   //   input: 'src/Avansel/Avansel.ts',
   //   output: {
   //     file: '../suite/src/assets/js/avansel.min.js',

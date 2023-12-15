@@ -9,7 +9,6 @@ import {LevelConfig, MultiResSource} from "../../Types";
 class Multires {
 
   levels: Array<Level>
-  levelsConfig: LevelConfig
   source: MultiResSource
   controls: Controls
   camera: PerspectiveCamera
@@ -23,8 +22,7 @@ class Multires {
   constructor(levelsConfig: LevelConfig, source: MultiResSource, controls: Controls) {
     this.pixelsMin = 0.5
     this.pixelsMax = 5
-    this.levels = this.initLevels(levelsConfig)
-    this.levelsConfig = levelsConfig
+    this.levels = this.transformLevelsConfig(levelsConfig)
     this.source = source
     this.controls = controls
     this.camera = controls.camera.get()
@@ -41,7 +39,7 @@ class Multires {
     this.controls.canvas.addEventListener( 'fovChanged', this.onFovChanged.bind(this) )
   }
 
-  initLevels(levelsConfig: LevelConfig) : Array<Level> {
+  private transformLevelsConfig(levelsConfig: LevelConfig) : Array<Level> {
     if (!levelsConfig) return
     const levels = []
     for(let i = 0; i < levelsConfig.maxLevel; i++) {
@@ -203,7 +201,6 @@ class Multires {
     let maxLevel = 0
     for(var i = 0; i < levels; i++){
       const item  = this.pixelsBySize(this.levels[i].size, pos.fov)
-      if(this.levelsConfig.fallback) item.visible = true
       if(item.visible && !hasVisible) hasVisible = true
       if(item.visible && i > maxLevel) maxLevel = i
       this.visible.pixels[i] = item
