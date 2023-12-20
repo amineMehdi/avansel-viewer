@@ -7,10 +7,10 @@ import {AbortFunction, MultiResSource} from '../../../Types';
 
 export class Side {
     
-    private tileCache: Record<string, Mesh<PlaneGeometry, Material>>
+    private tileCache: Map<string, Mesh<PlaneGeometry, Material>>
 
     constructor() {
-        this.tileCache = {}
+        this.tileCache = new Map()
     }
 
     private sidePosition(side: string, level: number) {
